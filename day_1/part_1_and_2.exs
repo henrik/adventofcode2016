@@ -29,8 +29,8 @@ defmodule State do
   defp move_y(old_y, _, _), do: old_y
 end
 
-defmodule Runner do
-  def run do
+defmodule Day1 do
+  def part1 do
     raw_input = File.read!("input.txt")
 
     instructions =
@@ -44,8 +44,14 @@ defmodule Runner do
     end
 
     answer = abs(final_x) + abs(final_y)
-    IO.puts "Answer: #{answer}"
+    IO.puts "Answer to part 1: #{answer}"
+  end
+
+  def part2 do
+    answer = "???"
+    IO.puts "Answer to part 2: #{answer}"
   end
 end
 
-Runner.run
+Day1.part1
+Day1.part2

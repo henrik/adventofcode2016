@@ -2,33 +2,31 @@ defmodule State do
   defstruct [ :facing, :x, :y ]
 
   def update(old_state, turning, blocks) do
-    new_direction = Direction.turn(turning, old_state.facing)
+    direction = turn(turning, old_state.facing)
 
     %__MODULE__{
-      facing: new_direction,
-      x: update_x(old_state.x, new_direction, blocks),
-      y: update_y(old_state.y, new_direction, blocks),
+      facing: direction,
+      x: move_x(old_state.x, direction, blocks),
+      y: move_y(old_state.y, direction, blocks),
     }
   end
 
-  defp update_x(old_x, :east, blocks), do: old_x + blocks
-  defp update_x(old_x, :west, blocks), do: old_x - blocks
-  defp update_x(old_x, _, _), do: old_x
+  defp turn("L", :north), do: :west
+  defp turn("L", :south), do: :east
+  defp turn("L", :west), do: :south
+  defp turn("L", :east), do: :north
+  defp turn("R", :north), do: :east
+  defp turn("R", :south), do: :west
+  defp turn("R", :west), do: :north
+  defp turn("R", :east), do: :south
 
-  defp update_y(old_y, :north, blocks), do: old_y + blocks
-  defp update_y(old_y, :south, blocks), do: old_y - blocks
-  defp update_y(old_y, _, _), do: old_y
-end
+  defp move_x(old_x, :east, blocks), do: old_x + blocks
+  defp move_x(old_x, :west, blocks), do: old_x - blocks
+  defp move_x(old_x, _, _), do: old_x
 
-defmodule Direction do
-  def turn("L", :north), do: :west
-  def turn("L", :south), do: :east
-  def turn("L", :west), do: :south
-  def turn("L", :east), do: :north
-  def turn("R", :north), do: :east
-  def turn("R", :south), do: :west
-  def turn("R", :west), do: :north
-  def turn("R", :east), do: :south
+  defp move_y(old_y, :north, blocks), do: old_y + blocks
+  defp move_y(old_y, :south, blocks), do: old_y - blocks
+  defp move_y(old_y, _, _), do: old_y
 end
 
 defmodule Runner do

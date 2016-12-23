@@ -31,6 +31,7 @@ defmodule Keypad do
     target_y = max(current_y + move_y, 0)
     target_x = max(current_x + move_x, 0)
 
+    # We'll get a blank if we overflow OR we move into a non-key slot, e.g. up from "5" on pad 2.
     new_key_or_blank = pad |> Enum.at(target_y, []) |> Enum.at(target_x, @blank)
 
     case new_key_or_blank do

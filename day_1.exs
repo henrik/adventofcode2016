@@ -70,7 +70,7 @@ defmodule Day1 do
   defp answer_from_location(%Location{x: x, y: y}), do: abs(x) + abs(y)
 
   defp instructions do
-    File.read!("input.txt")
+    File.read!("input/day_1.txt")
     |> String.trim()
     |> String.split(", ")
     |> Enum.map(&parse_instruction/1)

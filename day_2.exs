@@ -31,7 +31,7 @@ defmodule Day2 do
   end
 
   defp instruction_sets do
-    File.read!("input.txt")
+    File.read!("input/day_2.txt")
     |> String.trim()
     |> String.split("\n")
     |> Enum.map(&String.codepoints/1)

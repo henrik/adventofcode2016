@@ -70,10 +70,10 @@ defmodule Day1 do
   defp answer_from_location(%Location{x: x, y: y}), do: abs(x) + abs(y)
 
   defp instructions do
-    raw_input = File.read!("input.txt")
-
-    Regex.scan(~r/(L|R)(\d+)/, raw_input, capture: :all_but_first)
-    |> Enum.map(fn ([turning, blocks]) -> {turning, String.to_integer(blocks)} end)
+    File.read!("input.txt")
+    |> String.trim()
+    |> String.split(", ")
+    |> Enum.map(fn (<<turning :: utf8>> <> count) -> {<<turning>>, String.to_integer(count)} end)
   end
 end
 

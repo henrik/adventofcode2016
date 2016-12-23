@@ -25,12 +25,12 @@ defmodule State do
 
   defp turn(:L, :north), do: :west
   defp turn(:L, :south), do: :east
-  defp turn(:L, :west), do: :south
-  defp turn(:L, :east), do: :north
+  defp turn(:L, :west),  do: :south
+  defp turn(:L, :east),  do: :north
   defp turn(:R, :north), do: :east
   defp turn(:R, :south), do: :west
-  defp turn(:R, :west), do: :north
-  defp turn(:R, :east), do: :south
+  defp turn(:R, :west),  do: :north
+  defp turn(:R, :east),  do: :south
 end
 
 defmodule Day1 do

@@ -66,10 +66,10 @@ defmodule Day2 do
   end
 
   defp digit_from_instruction_set(pad, instructions) do
-    initial_digit = "5"
+    initial_key = "5"
 
-    Enum.reduce instructions, initial_digit, fn (direction, current_digit) ->
-      Keypad.move(pad, current_digit, direction)
+    Enum.reduce instructions, initial_key, fn (direction, current_key) ->
+      Keypad.move(pad, current_key, direction)
     end
   end
 

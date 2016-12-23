@@ -23,14 +23,14 @@ defmodule State do
     %State{facing: direction, location: location}
   end
 
-  defp turn("L", :north), do: :west
-  defp turn("L", :south), do: :east
-  defp turn("L", :west), do: :south
-  defp turn("L", :east), do: :north
-  defp turn("R", :north), do: :east
-  defp turn("R", :south), do: :west
-  defp turn("R", :west), do: :north
-  defp turn("R", :east), do: :south
+  defp turn(:L, :north), do: :west
+  defp turn(:L, :south), do: :east
+  defp turn(:L, :west), do: :south
+  defp turn(:L, :east), do: :north
+  defp turn(:R, :north), do: :east
+  defp turn(:R, :south), do: :west
+  defp turn(:R, :west), do: :north
+  defp turn(:R, :east), do: :south
 end
 
 defmodule Day1 do
@@ -73,8 +73,11 @@ defmodule Day1 do
     File.read!("input.txt")
     |> String.trim()
     |> String.split(", ")
-    |> Enum.map(fn (<<turning :: utf8>> <> blocks) -> {<<turning>>, String.to_integer(blocks)} end)
+    |> Enum.map(&parse_instruction/1)
   end
+
+  defp parse_instruction("L" <> blocks), do: {:L, String.to_integer(blocks)}
+  defp parse_instruction("R" <> blocks), do: {:R, String.to_integer(blocks)}
 end
 
 Day1.part1

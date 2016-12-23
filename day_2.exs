@@ -23,19 +23,19 @@ defmodule Keypad do
   def move(pad, from_digit, "L"), do: do_move(pad, from_digit, -1, 0)
   def move(pad, from_digit, "R"), do: do_move(pad, from_digit, 1, 0)
 
-  defp do_move(pad, from_key, move_x, move_y) do
-    current_y = pad |> Enum.find_index(fn (line) -> Enum.member?(line, from_key) end)
-    current_x = pad |> Enum.at(current_y) |> Enum.find_index(fn(slot) -> slot == from_key end)
+  defp do_move(pad, old_key, move_x, move_y) do
+    current_y = pad |> Enum.find_index(fn (line) -> Enum.member?(line, old_key) end)
+    current_x = pad |> Enum.at(current_y) |> Enum.find_index(fn(slot) -> slot == old_key end)
 
     # Avoid negative indices.
     target_y = max(current_y + move_y, 0)
     target_x = max(current_x + move_x, 0)
 
-    res = pad |> Enum.at(target_y, []) |> Enum.at(target_x, @blank)
+    new_key_or_blank = pad |> Enum.at(target_y, []) |> Enum.at(target_x, @blank)
 
-    case res do
-      @blank -> from_key
-      other  -> other
+    case new_key_or_blank do
+      @blank  -> old_key
+      new_key -> new_key
     end
   end
 

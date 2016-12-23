@@ -47,7 +47,7 @@ defmodule Day1 do
     location = Enum.reduce_while instructions, {initial_state, initial_visited_locations}, fn ({turning, blocks}, {old_state, old_visited_locations}) ->
       new_state = State.update(old_state, turning, blocks)
 
-      # Don't include the end location, or we'll always recognise it as previously traversed on the next go around.
+      # Don't include the new location, or we'll always recognise it as previously traversed on the next go around.
       traversed_locations = Location.all_traversed(old_state.location, new_state.location) -- [new_state.location]
 
       previously_traversed_location = Enum.find traversed_locations, fn (loc) ->

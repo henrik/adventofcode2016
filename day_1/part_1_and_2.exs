@@ -73,7 +73,7 @@ defmodule Day1 do
     File.read!("input.txt")
     |> String.trim()
     |> String.split(", ")
-    |> Enum.map(fn (<<turning :: utf8>> <> count) -> {<<turning>>, String.to_integer(count)} end)
+    |> Enum.map(fn (<<turning :: utf8>> <> blocks) -> {<<turning>>, String.to_integer(blocks)} end)
   end
 end
 

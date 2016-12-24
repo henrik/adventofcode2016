@@ -50,8 +50,7 @@ end
 defmodule Day4 do
   def part1 do
     answer =
-      input
-      |> Enum.map(&Room.parse/1)
+      rooms
       |> Enum.filter(&Room.real?/1)
       |> Enum.map(&Room.sector_id/1)
       |> Enum.sum
@@ -60,12 +59,15 @@ defmodule Day4 do
   end
 
   def part2 do
-    rooms = input |> Enum.map(&Room.parse/1)
-
     rooms
     |> Enum.each(fn (room) ->
       IO.puts "#{Room.sector_id(room)}: #{Room.decrypted_name(room)}"
     end)
+  end
+
+  defp rooms do
+    input
+    |> Enum.map(&Room.parse/1)
   end
 
   defp input do

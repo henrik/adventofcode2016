@@ -34,8 +34,8 @@ defmodule Room do
   defp expected_checksum(%Room{encrypted_name: encrypted_name}) do
     letters =
       encrypted_name
+      |> String.replace("-", "")
       |> String.codepoints
-      |> Enum.reject(& &1 == "-")
 
     letters
     |> Enum.sort

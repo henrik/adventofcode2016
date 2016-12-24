@@ -28,7 +28,12 @@ defmodule Room do
 
   defp decrypt_char("-", _), do: " "
   defp decrypt_char(<<charcode>>, rotate_by) do
-    <<rem(charcode - ?a + rotate_by, ?z - ?a + 1) + ?a>>
+    char_index = charcode - ?a  # "a" is 0, "b" is 1, etc.
+
+    alphabet_length = ?z - ?a + 1
+    new_char_index = rem(char_index + rotate_by, alphabet_length)
+
+    <<new_char_index + ?a>>  # Convert back from 0 to "a", 1 to "b", etc.
   end
 
   defp expected_checksum(%Room{encrypted_name: encrypted_name}) do

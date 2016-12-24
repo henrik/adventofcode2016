@@ -1,6 +1,5 @@
 defmodule Triangle do
   def possible?({a, b, c}) when a + b > c and a + c > b and b + c > a, do: true
-  def possible?([a, b, c]), do: possible?({a, b, c})
   def possible?(_), do: false
 end
 
@@ -8,6 +7,7 @@ defmodule Day3 do
   def part1 do
     answer =
       input
+      |> Enum.map(&List.to_tuple/1)
       |> Enum.count(&Triangle.possible?/1)
 
     IO.puts "Number of possible triangles: #{answer}"

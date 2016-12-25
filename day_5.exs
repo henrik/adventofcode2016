@@ -2,7 +2,13 @@ defmodule Day5 do
   @input "reyedfim"
   @password_length 8
   @prefix "00000"
+
   @blank_slot "_"
+  @hex_chars ~w[0 1 2 3 4 5 6 7 8 9 a b c d e f]
+  @hex_chars_length length(@hex_chars)
+
+  # This slows down the animated output so it looks good.
+  @update_placeholder_every_n_iterations 500
 
   # NOTE: Not optimised for speed (~38s on my MacBook Pro). Parallelise?
   def part1 do
@@ -26,19 +32,12 @@ defmodule Day5 do
     position_at_position = 6
     pw_char_at_position = 7
 
-    # This slows down the animated output so it looks good.
-    update_placeholder_every_n_iterations = 500
-
     blank_password = List.duplicate(@blank_slot, @password_length)
-
-    hex_chars = ~w[0 1 2 3 4 5 6 7 8 9 a b c d e f]
-    hex_chars_length = length(hex_chars)
 
     IO.puts ""
     IO.puts "Password:"
 
     stream_of_numbers |> Enum.reduce_while(blank_password, fn (i, password_so_far) ->
-
       hash = md5_hash("#{@input}#{i}")
 
       new_password =
@@ -63,14 +62,7 @@ defmodule Day5 do
           password_so_far
         end
 
-      shown_password = new_password |> Enum.with_index |> Enum.map(fn
-        {@blank_slot, j} ->
-          index = rem(div(i, update_placeholder_every_n_iterations) + j, hex_chars_length)
-          char = Enum.at(hex_chars, index)
-          [IO.ANSI.yellow, char, IO.ANSI.reset]
-        {real_char, _i} ->
-          [IO.ANSI.green, real_char, IO.ANSI.reset]
-      end)
+      shown_password = password_to_show(new_password, i)
 
       IO.write ["\r", shown_password, " [##{i}]"]
 
@@ -80,6 +72,17 @@ defmodule Day5 do
         IO.puts ""
         {:halt, new_password}
       end
+    end)
+  end
+
+  defp password_to_show(password, i) do
+    password |> Enum.with_index |> Enum.map(fn
+      {@blank_slot, j} ->
+        index = rem(div(i, @update_placeholder_every_n_iterations) + j, @hex_chars_length)
+        char = Enum.at(@hex_chars, index)
+        [IO.ANSI.yellow, char, IO.ANSI.reset]
+      {real_char, _i} ->
+        [IO.ANSI.green, real_char, IO.ANSI.reset]
     end)
   end
 

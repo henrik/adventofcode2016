@@ -62,9 +62,7 @@ defmodule Day5 do
           password_so_far
         end
 
-      shown_password = password_to_show(new_password, i)
-
-      IO.write ["\r", shown_password, " [##{i}]"]
+      IO.write ["\r", password_to_show(new_password, i), " [##{i}]"]
 
       if Enum.member?(new_password, @blank_slot) do
         {:cont, new_password}

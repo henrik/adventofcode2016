@@ -1,15 +1,16 @@
 defmodule Day5 do
   @input "reyedfim"
   @password_length 8
+  @prefix "00000"
 
   # NOTE: Not optimised for speed (~38s on my MacBook Pro). Parallelise?
   def part1 do
     get_nth_char_of_hash = 6
 
     password =
-      Stream.iterate(0, & &1 + 1)
+      stream_of_numbers
       |> Stream.map(& md5_hash("#{@input}#{&1}"))
-      |> Stream.filter(& String.starts_with?(&1, "00000"))
+      |> Stream.filter(& String.starts_with?(&1, @prefix))
       |> Stream.map(& String.at(&1, get_nth_char_of_hash - 1))
       |> Stream.take(@password_length)
       |> Enum.join
@@ -21,24 +22,27 @@ defmodule Day5 do
   # TODO: Not cleaned up!
   # TODO: Parallelise!
   def part2 do
-    IO.puts ""
-    IO.puts "Password:"
+    position_at_position = 6
+    pw_char_at_position = 7
+
+    # This slows down the animated output so it looks good.
+    update_placeholder_every_n_iterations = 500
 
     blank_password = List.duplicate("_", @password_length)
 
     hex_chars = ~w[0 1 2 3 4 5 6 7 8 9 a b c d e f]
     hex_chars_length = length(hex_chars)
 
-    # This slows down the animated output so it looks good.
-    update_placeholder_every_n_iterations = 500
+    IO.puts ""
+    IO.puts "Password:"
 
-    Stream.iterate(0, & &1 + 1) |> Enum.reduce_while(blank_password, fn (i, password_so_far) ->
+    stream_of_numbers |> Enum.reduce_while(blank_password, fn (i, password_so_far) ->
 
       hash = md5_hash("#{@input}#{i}")
 
       new_password =
-        if String.starts_with?(hash, "00000") do
-          position = String.at(hash, 5)
+        if String.starts_with?(hash, @prefix) do
+          position = String.at(hash, position_at_position - 1)
 
           # "ignore invalid positions"
           if Enum.member?(~w[0 1 2 3 4 5 6 7], position) do
@@ -46,7 +50,7 @@ defmodule Day5 do
 
             # "Use only the first result for each position"
             if Enum.at(password_so_far, position) == "_" do
-              char = String.at(hash, 6)
+              char = String.at(hash, pw_char_at_position - 1)
               List.replace_at(password_so_far, position, char)
             else
               password_so_far
@@ -78,7 +82,9 @@ defmodule Day5 do
     end)
   end
 
-  def md5_hash(input) do
+  defp stream_of_numbers, do: Stream.iterate(0, & &1 + 1)
+
+  defp md5_hash(input) do
     :crypto.hash(:md5, input) |> Base.encode16(case: :lower)
   end
 end

@@ -2,6 +2,7 @@ defmodule Day5 do
   @input "reyedfim"
   @password_length 8
   @prefix "00000"
+  @blank_slot "_"
 
   # NOTE: Not optimised for speed (~38s on my MacBook Pro). Parallelise?
   def part1 do
@@ -28,7 +29,7 @@ defmodule Day5 do
     # This slows down the animated output so it looks good.
     update_placeholder_every_n_iterations = 500
 
-    blank_password = List.duplicate("_", @password_length)
+    blank_password = List.duplicate(@blank_slot, @password_length)
 
     hex_chars = ~w[0 1 2 3 4 5 6 7 8 9 a b c d e f]
     hex_chars_length = length(hex_chars)
@@ -49,7 +50,7 @@ defmodule Day5 do
             position = String.to_integer(position)
 
             # "Use only the first result for each position"
-            if Enum.at(password_so_far, position) == "_" do
+            if Enum.at(password_so_far, position) == @blank_slot do
               char = String.at(hash, pw_char_at_position - 1)
               List.replace_at(password_so_far, position, char)
             else
@@ -63,7 +64,7 @@ defmodule Day5 do
         end
 
       shown_password = new_password |> Enum.with_index |> Enum.map(fn
-        {"_", j} ->
+        {@blank_slot, j} ->
           index = rem(div(i, update_placeholder_every_n_iterations) + j, hex_chars_length)
           char = Enum.at(hex_chars, index)
           [IO.ANSI.yellow, char, IO.ANSI.reset]
@@ -73,7 +74,7 @@ defmodule Day5 do
 
       IO.write ["\r", shown_password, " [##{i}]"]
 
-      if Enum.member?(new_password, "_") do
+      if Enum.member?(new_password, @blank_slot) do
         {:cont, new_password}
       else
         IO.puts ""

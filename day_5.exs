@@ -67,7 +67,7 @@ defmodule Day5 do
           [IO.ANSI.green, real_char, IO.ANSI.reset]
       end)
 
-      IO.write "\r#{shown_password |> Enum.join} [##{i}]"
+      IO.write ["\r", shown_password, " [##{i}]"]
 
       if Enum.member?(new_password, "_") do
         {:cont, new_password}

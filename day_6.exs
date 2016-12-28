@@ -7,12 +7,32 @@ defmodule Day6 do
     IO.puts "Answer: #{answer}"
   end
 
+  def part2 do
+    answer =
+      inverted_input
+      |> Enum.map(&least_frequent_character/1)
+
+    IO.puts "Answer: #{answer}"
+  end
+
   defp most_frequent_character(charlist) do
     charcode =
       charlist
       |> Enum.sort
       |> Enum.chunk_by(& &1)
       |> Enum.sort_by(& -length(&1))
+      |> hd
+      |> hd
+
+    <<charcode>>
+  end
+
+  defp least_frequent_character(charlist) do
+    charcode =
+      charlist
+      |> Enum.sort
+      |> Enum.chunk_by(& &1)
+      |> Enum.sort_by(& length(&1))
       |> hd
       |> hd
 
@@ -34,3 +54,4 @@ defmodule Day6 do
 end
 
 Day6.part1
+Day6.part2
